@@ -2,9 +2,9 @@
 
 ## Using
 
-1. ```npm install```
+- ```npm install```
 
-2. ```node index.js url```
+- ```node index.js url```
 
 eg:
 
