@@ -16,7 +16,6 @@ let imgCount = 0, itemList = {}
   const browser = await puppeteer.launch({
     ignoreHTTPSErrors: true,
     timeout: 150000,
-    headless: false,
   })
   const page = await browser.newPage()
   //设置cookie
@@ -26,11 +25,9 @@ let imgCount = 0, itemList = {}
   await sleep(3000)
   const urlResult = await urlResults(page)
   //展示页
-  console.log(urlResult);
   if(urlResult) {
     for(let i = 0; i < urlResult.length; i++) {
       const data = await getAllItems(page, urlResult[i])
-      console.log(data);
       await downLoadImage(page, data)  
     }
   }else {
