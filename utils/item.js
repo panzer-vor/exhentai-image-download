@@ -5,6 +5,7 @@ const fs = require('fs')
 let imgCount = 0, itemList = {}
 
 async function nextPage(page, baseUrl, num) {
+  baseUrl = baseUrl.split('?')[0]
   await page.goto(`${baseUrl}?p=${num}`)
   await page.waitForSelector('#gdt')
   const i = await page.evaluate(() => {
@@ -20,8 +21,13 @@ async function nextPage(page, baseUrl, num) {
 exports.getAllItems = async function (page, baseUrl) {
   //第一页
   let pa = baseUrl.split('=')[1]
-  pa ? null : pa = 0
-  await page.goto(`${baseUrl}?p=${pa}`)
+  if(pa) {
+    pa = parseInt(pa)
+  }else {
+    pa = 0
+    baseUrl = `${baseUrl}?p=0`
+  }
+  await page.goto(baseUrl)
   await page.waitForSelector('#gdt')
   const item1 = await page.evaluate(() => {
     let items = [], name = document.querySelector('.gm #gd2 #gj').innerText
@@ -35,16 +41,21 @@ exports.getAllItems = async function (page, baseUrl) {
     }
   })
   itemList = item1
+
   await fs.mkdirSync(itemList.name)
     //第二页
-  let t = 20
-  for(let p = pa + 1; p < t; p++) {
-    const i = await nextPage(page,baseUrl, p)
-    itemList.items = [...itemList.items, ...i]
-    if(i.length < 40) {
-      break
+
+  if(item1.items.length>=40) {
+    let t = 20
+    for(let p = pa + 1; p < t; p++) {
+      const i = await nextPage(page,baseUrl, p)
+      itemList.items = [...itemList.items, ...i]
+      if(i.length < 40) {
+        break
+      }
     }
   }
+  
   
   return {
     itemList,

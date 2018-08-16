@@ -16,6 +16,7 @@ let imgCount = 0, itemList = {}
   const browser = await puppeteer.launch({
     ignoreHTTPSErrors: true,
     timeout: 150000,
+    headless: false,
   })
   const page = await browser.newPage()
   //设置cookie
