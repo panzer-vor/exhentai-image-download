@@ -1,4 +1,4 @@
-const url = process.argv.splice(2)[0]
+const url = process.argv.splice(2)[0] || 'https://exhentai.org/'
 const fs = require('fs')
 const path = require('path')
 const puppeteer = require('puppeteer')

@@ -1,11 +1,11 @@
 {
-  "name": "exhentai-image-get",
+  "name": "exhentai-image-cralwer",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "https://github.com/panzer-vor/exhentai-image-cralwer.git",
+  "author": "panzer-vor <xyk0279@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "superagent": "^3.8.3",
-    "superagent-charset": "^1.2.0"
+    "puppeteer": "^1.7.0"
   }
 }
