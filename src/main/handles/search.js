@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 const fs = require('fs')
 const request = require('request')
 const path = require('path')
-
+const keepUri = process.env.NODE_ENV === 'development' ? '../../../../../' : '../../'
 const searchCralwer = async (url, mainWindow) => {
   try {
     const browser = await puppeteer.launch({
@@ -10,7 +10,7 @@ const searchCralwer = async (url, mainWindow) => {
       ignoreHTTPSErrors: true,
       timeout: 150000,
       headless: false,
-      executablePath: './chromium/chrome.exe'
+      executablePath: process.env.NODE_ENV === 'development' ? null : './chromium/chrome.exe'
     })
     const page = await browser.newPage()
     await page.setCookie(
@@ -40,7 +40,7 @@ const searchCralwer = async (url, mainWindow) => {
       const subTxt = document.querySelector('#gn').innerText
       return mainTxt || subTxt
     })
-    fs.mkdirSync(path.join(process.argv[0], `../../${docName}`))
+    fs.mkdirSync(path.join(process.argv[0], `${keepUri}${docName}`))
     const pageTotal = await page.evaluate(() => {
       return document.querySelectorAll('.ptt tr td').length - 2
     })
@@ -56,11 +56,12 @@ const searchCralwer = async (url, mainWindow) => {
       for (let index = 0; index < urls.length; index++) {
         await page.goto(urls[index])
         const url = await page.$eval('#img', i => i.src)
-        request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `../../${docName}`, `${imgCurrentCount}.jpg`)))
+        request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `${keepUri}${docName}`, `${imgCurrentCount}.jpg`)))
         imgCurrentCount++
       }
     }
     browser.close()
+    mainWindow.webContents.send('getPicsFinish', '下载完成')
   } catch (err) {
     mainWindow.webContents.send('getPicsFinish', `err: ${err}`)
   }
