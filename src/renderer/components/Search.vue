@@ -1,6 +1,6 @@
 <template>
   <div class="row login-wrapper">
-    <h1>Ex-hentai的页面url</h1>
+    <h1>Ex-hentai图片下载</h1>
     <div class="input-field col s12">
       <input id="picUrl" type="text" class="validate" v-model="picUrl">
       <label for="picUrl">地址</label>

@@ -8,7 +8,7 @@ const searchCralwer = async (url, mainWindow) => {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox'],
       ignoreHTTPSErrors: true,
-      timeout: 150000,
+      timeout: 120000,
       headless: false,
       executablePath: process.env.NODE_ENV === 'development' ? null : './chromium/chrome.exe'
     })
@@ -55,7 +55,7 @@ const searchCralwer = async (url, mainWindow) => {
       })
       for (let index = 0; index < urls.length; index++) {
         await page.goto(urls[index])
-        const url = await page.$eval('#img', i => i.src)
+        const url = await page.evaluate(() => document.querySelector('#img').src)
         request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `${keepUri}${docName}`, `${imgCurrentCount}.jpg`)))
         imgCurrentCount++
       }
