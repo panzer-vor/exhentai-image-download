@@ -34,7 +34,9 @@ const searchCralwer = async (url, mainWindow) => {
         path: '/'
       }
     )
-    await page.goto(url)
+    await page.goto(url, {
+      timeout: 0
+    })
     const docName = await page.evaluate(() => {
       const mainTxt = document.querySelector('#gj').innerText
       const subTxt = document.querySelector('#gn').innerText
@@ -47,14 +49,20 @@ const searchCralwer = async (url, mainWindow) => {
     let imgCurrentCount = 1
 
     for (let i = 0; i < pageTotal; i++) {
-      if (i) await page.goto(`${url}?p=${i}`)
+      if (i) {
+        await page.goto(`${url}?p=${i}`, {
+          timeout: 0
+        })
+      }
       const urls = await page.evaluate(() => {
         const els = document.querySelectorAll('#gdt .gdtm a')
         const urlArr = Array.prototype.slice.call(els).map(v => v.href)
         return urlArr
       })
       for (let index = 0; index < urls.length; index++) {
-        await page.goto(urls[index])
+        await page.goto(urls[index], {
+          timeout: 0
+        })
         const url = await page.evaluate(() => document.querySelector('#img').src)
         request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `${keepUri}${docName}`, `${imgCurrentCount}.jpg`)))
         imgCurrentCount++
