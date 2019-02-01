@@ -8,6 +8,7 @@
     <button class="btn waves-effect waves-light" type="submit" name="action" @click="search">下载
       <i class="material-icons right">send</i>
     </button>
+    <h1>{{status}}</h1>
   </div>
 </template>
 
@@ -17,12 +18,17 @@
     name: 'Search',
     data () {
       return {
-        picUrl: ''
+        picUrl: '',
+        status: '',
       }
     },
     created () {
+      const self = this
       ipcRenderer.on('getPicsFinish', (event, arg) => {
-        alert(arg)
+        self.status = arg
+      })
+      ipcRenderer.on('getPicsStaus', (event, arg) => {
+        self.status = arg
       })
     },
     methods: {

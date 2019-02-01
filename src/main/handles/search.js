@@ -9,7 +9,7 @@ const searchCralwer = async (url, mainWindow) => {
       args: ['--no-sandbox'],
       ignoreHTTPSErrors: true,
       timeout: 120000,
-      headless: false,
+      headless: true,
       executablePath: process.env.NODE_ENV === 'development' ? null : './chromium/chrome.exe'
     })
     const page = await browser.newPage()
@@ -49,6 +49,7 @@ const searchCralwer = async (url, mainWindow) => {
     let imgCurrentCount = 1
 
     for (let i = 0; i < pageTotal; i++) {
+      mainWindow.webContents.send('getPicsStatus', `保存中： ${imgCurrentCount}`)
       if (i) {
         await page.goto(`${url}?p=${i}`, {
           timeout: 0
@@ -65,11 +66,12 @@ const searchCralwer = async (url, mainWindow) => {
         })
         const url = await page.evaluate(() => document.querySelector('#img').src)
         request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `${keepUri}${docName}`, `${imgCurrentCount}.jpg`)))
+        mainWindow.webContents.send('getPicsStatus', `保存完成： ${imgCurrentCount}`)
         imgCurrentCount++
       }
     }
     browser.close()
-    mainWindow.webContents.send('getPicsFinish', '下载完成')
+    mainWindow.webContents.send('getPicsFinish', '保存结束')
   } catch (err) {
     mainWindow.webContents.send('getPicsFinish', `err: ${err}`)
   }
