@@ -19,3 +19,6 @@ yarn
 打包后目录: ```./build/win-unpacked```
 
 tip: 打包出来的项目需要配合独立的[chromium](https://www.chromium.org/)文件夹,放入打包后页面根目录
+
+##### todo: 
+关键字搜索、列表展示......
