@@ -65,7 +65,7 @@ const searchCralwer = async (url, mainWindow) => {
       }
     }
     browser.close()
-    mainWindow.webContents.send('getPicsFinish', '保存结束')
+    mainWindow.webContents.send('getPicsFinish', `保存结束, 保存目录${path.join(process.argv[0], `${keepUri}${docName}`)}`)
   } catch (err) {
     mainWindow.webContents.send('getPicsFinish', `err: ${err}`)
   }
