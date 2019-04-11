@@ -1,6 +1,6 @@
 # exhentai-image-cralwer
 
-## 需要解决的问题： 没有torrent时exhentai的图片保存过于繁琐
+## 需要解决的问题： 没有torrent时exhentai的图片保存过于繁琐,通过输入当前网站保存系列图片
 ## 解决问题的方式： 通过脚本爬取页面图片并保存
 
 ## Using
