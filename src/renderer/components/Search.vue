@@ -19,7 +19,7 @@
     data () {
       return {
         picUrl: '',
-        status: '',
+        status: ''
       }
     },
     created () {
@@ -27,7 +27,7 @@
       ipcRenderer.on('getPicsFinish', (event, arg) => {
         self.status = arg
       })
-      ipcRenderer.on('getPicsStaus', (event, arg) => {
+      ipcRenderer.on('getPicsStatus', (event, arg) => {
         self.status = arg
       })
     },

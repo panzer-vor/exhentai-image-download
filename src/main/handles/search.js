@@ -34,9 +34,7 @@ const searchCralwer = async (url, mainWindow) => {
         path: '/'
       }
     )
-    await page.goto(url, {
-      timeout: 0
-    })
+    await page.goto(url, {timeout: 3000000})
     const docName = await page.evaluate(() => {
       const mainTxt = document.querySelector('#gj').innerText
       const subTxt = document.querySelector('#gn').innerText
@@ -51,9 +49,7 @@ const searchCralwer = async (url, mainWindow) => {
     for (let i = 0; i < pageTotal; i++) {
       mainWindow.webContents.send('getPicsStatus', `保存中： ${imgCurrentCount}`)
       if (i) {
-        await page.goto(`${url}?p=${i}`, {
-          timeout: 0
-        })
+        await page.goto(`${url}?p=${i}`, {timeout: 3000000})
       }
       const urls = await page.evaluate(() => {
         const els = document.querySelectorAll('#gdt .gdtm a')
@@ -61,9 +57,7 @@ const searchCralwer = async (url, mainWindow) => {
         return urlArr
       })
       for (let index = 0; index < urls.length; index++) {
-        await page.goto(urls[index], {
-          timeout: 0
-        })
+        await page.goto(urls[index], {timeout: 3000000})
         const url = await page.evaluate(() => document.querySelector('#img').src)
         request(url).pipe(fs.createWriteStream(path.join(process.argv[0], `${keepUri}${docName}`, `${imgCurrentCount}.jpg`)))
         mainWindow.webContents.send('getPicsStatus', `保存完成： ${imgCurrentCount}`)
